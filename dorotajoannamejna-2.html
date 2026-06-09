@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dorota Joanna Mejna — Medium & Doradca Duchowy</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Cinzel:wght@400;600;700&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --burgundy: #6b1f3a;
+    --burgundy-dark: #4a1228;
+    --rose: #e8a0b4;
+    --rose-light: #f2c4d0;
+    --blush: #fdf0f3;
+    --pale: #f9e8ee;
+    --cream: #fefaf8;
+    --gold: #c9a96e;
+    --text: #3a1825;
+    --muted: #7a4a5a;
+    --dark: #1a0a10;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Lato', sans-serif;
+    background: var(--blush);
+    color: var(--text);
+    overflow-x: hidden;
+  }
+
+  /* ===== NAV ===== */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.1rem 3rem;
+    background: rgba(253,240,243,0.92);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(232,160,180,0.25);
+    transition: padding 0.3s;
+  }
+  nav.scrolled { padding: 0.75rem 3rem; }
+
+  .logo {
+    text-decoration: none;
+    display: flex; flex-direction: column;
+  }
+  .logo-name {
+    font-family: 'Cinzel', serif;
+    font-size: 0.95rem; font-weight: 600;
+    color: var(--burgundy); letter-spacing: 0.1em;
+  }
+  .logo-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.72rem; font-style: italic;
+    color: var(--rose); letter-spacing: 0.15em;
+  }
+
+  .nav-links { display: flex; gap: 2.2rem; list-style: none; }
+  .nav-links a {
+    font-size: 0.68rem; font-weight: 300;
+    letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--burgundy); text-decoration: none;
+    position: relative; transition: color 0.3s;
+  }
+  .nav-links a::after {
+    content: ''; position: absolute; bottom: -3px; left: 0; right: 0;
+    height: 1px; background: var(--rose);
+    transform: scaleX(0); transform-origin: left; transition: transform 0.3s;
+  }
+  .nav-links a:hover { color: var(--rose); }
+  .nav-links a:hover::after { transform: scaleX(1); }
+
+  .nav-cta {
+    padding: 0.55rem 1.6rem;
+    background: var(--burgundy); color: #fff !important;
+    border-radius: 50px; font-size: 0.65rem !important;
+    letter-spacing: 0.2em !important;
+    transition: background 0.3s !important;
+  }
+  .nav-cta:hover { background: var(--burgundy-dark) !important; color: #fff !important; }
+  .nav-cta::after { display: none !important; }
+
+  .burger { display: none; cursor: pointer; flex-direction: column; gap: 5px; }
+  .burger span { display: block; width: 22px; height: 1px; background: var(--burgundy); transition: 0.3s; }
+
+  /* ===== HERO ===== */
+  .hero {
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    text-align: center; padding: 9rem 2rem 5rem;
+    position: relative; overflow: hidden;
+    background: linear-gradient(150deg, #fdf0f3 0%, #f7e0ea 40%, #fdf0f3 100%);
+  }
+
+  .hero-bg-circle {
+    position: absolute; border-radius: 50%;
+    pointer-events: none;
+  }
+  .hbc1 {
+    width: 600px; height: 600px;
+    top: 50%; left: 50%; transform: translate(-50%,-50%);
+    background: radial-gradient(circle, rgba(232,160,180,0.15) 0%, transparent 70%);
+  }
+  .hbc2 {
+    width: 300px; height: 300px;
+    top: 10%; right: 5%;
+    background: radial-gradient(circle, rgba(107,31,58,0.06) 0%, transparent 70%);
+    animation: pulse 5s ease-in-out infinite;
+  }
+  .hbc3 {
+    width: 200px; height: 200px;
+    bottom: 15%; left: 8%;
+    background: radial-gradient(circle, rgba(232,160,180,0.12) 0%, transparent 70%);
+    animation: pulse 7s ease-in-out infinite 1s;
+  }
+
+  .hero-stars {
+    position: absolute; inset: 0; pointer-events: none;
+    overflow: hidden;
+  }
+  .star {
+    position: absolute; width: 3px; height: 3px;
+    border-radius: 50%; background: var(--rose);
+    animation: twinkle var(--d, 3s) ease-in-out infinite var(--delay, 0s);
+    opacity: 0;
+  }
+
+  .hero-inner { position: relative; max-width: 680px; }
+
+  .hero-eyebrow {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.9rem; font-style: italic; font-weight: 300;
+    color: var(--rose); letter-spacing: 0.2em;
+    margin-bottom: 1.8rem;
+    animation: fadeUp 1s 0.1s ease both;
+  }
+
+  .hero-title {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(2.8rem, 6vw, 5rem);
+    font-weight: 400; line-height: 1.1;
+    color: var(--burgundy);
+    margin-bottom: 0.3rem;
+    animation: fadeUp 1s 0.25s ease both;
+  }
+  .hero-title-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.6rem, 3.5vw, 2.6rem);
+    font-style: italic; font-weight: 300;
+    color: var(--burgundy-dark); opacity: 0.75;
+    margin-bottom: 2rem;
+    animation: fadeUp 1s 0.4s ease both;
+  }
+
+  .hero-divider {
+    display: flex; align-items: center; justify-content: center;
+    gap: 1rem; margin-bottom: 2rem;
+    animation: fadeUp 1s 0.55s ease both;
+  }
+  .hero-divider::before, .hero-divider::after {
+    content: ''; flex: 1; max-width: 80px; height: 1px;
+    background: linear-gradient(to right, transparent, var(--rose));
+  }
+  .hero-divider::after { background: linear-gradient(to left, transparent, var(--rose)); }
+  .hero-divider span { color: var(--rose); font-size: 1rem; }
+
+  .hero-quote {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.1rem, 2.2vw, 1.4rem);
+    font-style: italic; font-weight: 300;
+    color: var(--text); line-height: 1.8;
+    max-width: 520px; margin: 0 auto 3rem;
+    animation: fadeUp 1s 0.7s ease both;
+  }
+
+  .hero-btns {
+    display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+    animation: fadeUp 1s 0.85s ease both;
+  }
+  .btn {
+    display: inline-block; padding: 0.9rem 2.5rem;
+    font-size: 0.7rem; font-weight: 300;
+    letter-spacing: 0.25em; text-transform: uppercase;
+    text-decoration: none; border-radius: 50px; transition: all 0.35s;
+  }
+  .btn-solid {
+    background: var(--burgundy); color: #fff;
+    border: 1px solid var(--burgundy);
+  }
+  .btn-solid:hover { background: var(--burgundy-dark); border-color: var(--burgundy-dark); }
+  .btn-ghost {
+    background: transparent; color: var(--burgundy);
+    border: 1px solid rgba(107,31,58,0.4);
+  }
+  .btn-ghost:hover { background: var(--burgundy); color: #fff; border-color: var(--burgundy); }
+
+  .scroll-down {
+    position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+    animation: fadeUp 1s 1.2s ease both;
+    text-decoration: none;
+  }
+  .scroll-down span {
+    font-size: 0.6rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--rose);
+  }
+  .scroll-arrow {
+    width: 1px; height: 40px;
+    background: linear-gradient(to bottom, var(--rose), transparent);
+    animation: scrollAnim 2s ease-in-out infinite;
+  }
+
+  /* ===== SECTION BASE ===== */
+  section { padding: 6rem 2rem; }
+  .container { max-width: 1020px; margin: 0 auto; }
+  .section-eyebrow {
+    display: block; font-size: 0.62rem; font-weight: 300;
+    letter-spacing: 0.35em; text-transform: uppercase;
+    color: var(--rose); margin-bottom: 0.9rem;
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 300;
+    color: var(--burgundy); line-height: 1.2;
+    margin-bottom: 1.5rem;
+  }
+  .section-title em { font-style: italic; }
+  .line-deco {
+    width: 50px; height: 1px;
+    background: linear-gradient(to right, var(--rose), transparent);
+    margin-bottom: 2.5rem;
+  }
+
+  /* ===== ABOUT ===== */
+  #o-mnie { background: var(--cream); }
+  .about-wrap {
+    display: grid; grid-template-columns: 1fr 1.1fr; gap: 6rem; align-items: center;
+  }
+  .about-visual { display: flex; justify-content: center; }
+  .aura-wrap {
+    position: relative; width: 260px; height: 320px;
+  }
+  .aura-ring {
+    position: absolute; border-radius: 50%;
+    border: 1px solid rgba(232,160,180,0.3);
+    animation: ringPulse 4s ease-in-out infinite;
+  }
+  .aura-ring:nth-child(1) { inset: -20px; animation-delay: 0s; }
+  .aura-ring:nth-child(2) { inset: -40px; animation-delay: 0.8s; opacity: 0.5; }
+  .aura-ring:nth-child(3) { inset: -60px; animation-delay: 1.6s; opacity: 0.25; }
+  .aura-card {
+    position: absolute; inset: 0;
+    background: linear-gradient(145deg, #f9e8ee, #f0d5e0);
+    border-radius: 55% 45% 50% 50% / 50% 50% 50% 50%;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 2rem;
+    box-shadow: 0 25px 60px rgba(107,31,58,0.14);
+  }
+  .aura-symbol { font-size: 3.5rem; margin-bottom: 1rem; animation: float 5s ease-in-out infinite; }
+  .aura-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem; font-style: italic;
+    color: var(--burgundy); line-height: 1.6;
+  }
+  .about-content p {
+    font-size: 0.95rem; font-weight: 300; color: var(--muted);
+    line-height: 1.9; margin-bottom: 1.2rem;
+  }
+  .about-highlight {
+    font-family: 'Cormorant Garamond', serif !important;
+    font-size: 1.1rem !important; font-style: italic !important;
+    color: var(--burgundy) !important; font-weight: 400 !important;
+    border-left: 2px solid var(--rose);
+    padding-left: 1.2rem; margin-top: 1.5rem !important;
+  }
+
+  /* ===== NOTICE ===== */
+  .notice {
+    background: var(--burgundy);
+    padding: 3rem 2rem; text-align: center;
+  }
+  .notice p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.2rem, 3vw, 1.8rem);
+    font-style: italic; font-weight: 300;
+    color: rgba(255,255,255,0.9); line-height: 1.8;
+  }
+  .notice strong {
+    font-style: normal; font-weight: 600;
+    color: var(--rose-light);
+  }
+
+  /* ===== SESSIONS ===== */
+  #sesje {
+    background: linear-gradient(170deg, var(--blush) 0%, #f5dde8 100%);
+  }
+  .sessions-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(285px,1fr));
+    gap: 1.8rem; margin-top: 3rem;
+  }
+  .session-card {
+    background: #fff; border-radius: 20px;
+    padding: 2.2rem 2rem 2rem;
+    border: 1px solid rgba(232,160,180,0.22);
+    position: relative; overflow: hidden;
+    transition: transform 0.4s cubic-bezier(.2,.8,.2,1), box-shadow 0.4s;
+  }
+  .session-card::after {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--rose), var(--burgundy), var(--rose));
+    transform: scaleX(0); transform-origin: left; transition: transform 0.4s;
+  }
+  .session-card:hover { transform: translateY(-8px); box-shadow: 0 24px 56px rgba(107,31,58,0.13); }
+  .session-card:hover::after { transform: scaleX(1); }
+  .s-icon { font-size: 2.2rem; margin-bottom: 1rem; display: block; }
+  .s-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.25rem; font-weight: 600;
+    color: var(--burgundy); line-height: 1.3; margin-bottom: 0.7rem;
+  }
+  .s-desc {
+    font-size: 0.85rem; font-weight: 300; color: var(--muted);
+    line-height: 1.75; margin-bottom: 1.6rem;
+  }
+  .s-footer {
+    display: flex; align-items: center; justify-content: space-between;
+    border-top: 1px solid rgba(232,160,180,0.2); padding-top: 1.2rem;
+  }
+  .s-price {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem; font-weight: 600; color: var(--burgundy);
+  }
+  .s-dur {
+    font-size: 0.72rem; font-weight: 300; letter-spacing: 0.12em;
+    color: var(--rose); background: var(--pale);
+    padding: 0.35rem 0.9rem; border-radius: 50px;
+  }
+  .session-book-btn {
+    display: block; margin-top: 1.2rem; text-align: center;
+    padding: 0.7rem; border-radius: 50px;
+    background: transparent; border: 1px solid rgba(107,31,58,0.3);
+    color: var(--burgundy); font-size: 0.68rem; font-weight: 300;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    text-decoration: none; transition: all 0.3s;
+  }
+  .session-book-btn:hover { background: var(--burgundy); color: #fff; border-color: var(--burgundy); }
+
+  /* ===== SZKOLENIA ===== */
+  #szkolenia { background: var(--cream); }
+  .training-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr));
+    gap: 2rem; margin-top: 3rem;
+  }
+  .training-card {
+    padding: 2rem; border-radius: 16px;
+    border: 1px solid rgba(232,160,180,0.25);
+    background: var(--blush); transition: 0.35s;
+    position: relative;
+  }
+  .training-card:hover { border-color: var(--rose); transform: translateY(-4px); }
+  .t-icon { font-size: 2rem; margin-bottom: 1rem; display: block; }
+  .t-tag {
+    display: inline-block; font-size: 0.6rem; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--burgundy);
+    background: rgba(232,160,180,0.25); padding: 0.3rem 0.9rem;
+    border-radius: 50px; margin-bottom: 0.9rem;
+  }
+  .t-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem; font-weight: 600;
+    color: var(--burgundy); margin-bottom: 0.6rem;
+  }
+  .t-desc {
+    font-size: 0.85rem; font-weight: 300; color: var(--muted); line-height: 1.7;
+  }
+
+  /* ===== FAQ ===== */
+  #faq { background: linear-gradient(170deg, #f5dde8 0%, var(--blush) 100%); }
+  .faq-wrap { max-width: 740px; margin-top: 3rem; }
+  .faq-item {
+    border-bottom: 1px solid rgba(232,160,180,0.3);
+  }
+  .faq-item:first-child { border-top: 1px solid rgba(232,160,180,0.3); }
+  .faq-q {
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 1.5rem; padding: 1.5rem 0; cursor: pointer;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem; font-weight: 600;
+    color: var(--burgundy); transition: color 0.3s;
+    user-select: none;
+  }
+  .faq-q:hover { color: var(--rose); }
+  .faq-icon { font-size: 1.2rem; color: var(--rose); transition: transform 0.35s; flex-shrink: 0; }
+  .faq-item.open .faq-icon { transform: rotate(45deg); }
+  .faq-a {
+    font-size: 0.9rem; font-weight: 300; color: var(--muted);
+    line-height: 1.85; max-height: 0; overflow: hidden;
+    transition: max-height 0.4s ease, padding 0.3s;
+  }
+  .faq-item.open .faq-a { max-height: 300px; padding-bottom: 1.5rem; }
+
+  /* ===== CONTACT ===== */
+  #kontakt { background: var(--cream); }
+  .contact-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start;
+  }
+  .contact-info p {
+    font-size: 0.95rem; font-weight: 300; color: var(--muted);
+    line-height: 1.85; margin-bottom: 2rem;
+  }
+  .contact-item {
+    display: flex; align-items: center; gap: 1rem; margin-bottom: 1.4rem;
+  }
+  .contact-item-icon {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--pale); display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem; flex-shrink: 0;
+    border: 1px solid rgba(232,160,180,0.3);
+  }
+  .contact-item-text { display: flex; flex-direction: column; }
+  .contact-item-label {
+    font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--rose); margin-bottom: 0.2rem;
+  }
+  .contact-item-value {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem; color: var(--burgundy); text-decoration: none;
+    transition: color 0.3s;
+  }
+  .contact-item-value:hover { color: var(--rose); }
+
+  /* Contact form */
+  .contact-form { display: flex; flex-direction: column; gap: 1.2rem; }
+  .form-group { display: flex; flex-direction: column; gap: 0.5rem; }
+  .form-group label {
+    font-size: 0.62rem; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--rose); font-weight: 300;
+  }
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    padding: 0.85rem 1.1rem;
+    background: var(--blush); border: 1px solid rgba(232,160,180,0.35);
+    border-radius: 10px; font-family: 'Lato', sans-serif;
+    font-size: 0.9rem; font-weight: 300; color: var(--text);
+    outline: none; transition: border-color 0.3s;
+    resize: none;
+  }
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus {
+    border-color: var(--rose);
+  }
+  .form-group textarea { min-height: 120px; }
+  .form-group select { appearance: none; cursor: pointer; }
+  .form-submit {
+    padding: 1rem 2.5rem; background: var(--burgundy);
+    color: #fff; border: none; border-radius: 50px;
+    font-family: 'Lato', sans-serif; font-size: 0.7rem; font-weight: 300;
+    letter-spacing: 0.25em; text-transform: uppercase;
+    cursor: pointer; transition: background 0.3s; align-self: flex-start;
+  }
+  .form-submit:hover { background: var(--burgundy-dark); }
+  .form-note {
+    font-size: 0.75rem; font-weight: 300; color: var(--muted); font-style: italic;
+  }
+  .success-msg {
+    display: none; padding: 1rem 1.5rem;
+    background: rgba(107,31,58,0.08); border: 1px solid rgba(232,160,180,0.4);
+    border-radius: 10px; color: var(--burgundy);
+    font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-style: italic;
+  }
+
+  /* ===== FOOTER ===== */
+  footer {
+    background: var(--dark); padding: 3rem 2rem 2rem;
+    text-align: center;
+  }
+  .footer-logo {
+    font-family: 'Cinzel', serif; font-size: 1rem; font-weight: 600;
+    color: rgba(255,255,255,0.7); letter-spacing: 0.15em; margin-bottom: 0.4rem;
+  }
+  .footer-sub {
+    font-family: 'Cormorant Garamond', serif; font-size: 0.85rem;
+    font-style: italic; color: var(--rose); margin-bottom: 1.5rem;
+  }
+  .footer-line {
+    width: 40px; height: 1px;
+    background: rgba(232,160,180,0.3); margin: 0 auto 1.5rem;
+  }
+  footer p {
+    font-size: 0.72rem; font-weight: 300; letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.3);
+  }
+
+  /* ===== ANIMATIONS ===== */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(28px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes float {
+    0%,100% { transform: translateY(0); }
+    50%      { transform: translateY(-12px); }
+  }
+  @keyframes pulse {
+    0%,100% { transform: scale(1); opacity: 1; }
+    50%      { transform: scale(1.1); opacity: 0.6; }
+  }
+  @keyframes ringPulse {
+    0%,100% { opacity: 0.3; transform: scale(1); }
+    50%      { opacity: 0.7; transform: scale(1.03); }
+  }
+  @keyframes twinkle {
+    0%,100% { opacity: 0; transform: scale(0.5); }
+    50%      { opacity: 1; transform: scale(1); }
+  }
+  @keyframes scrollAnim {
+    0%   { transform: scaleY(0) translateY(0); transform-origin: top; opacity:1; }
+    50%  { transform: scaleY(1) translateY(0); transform-origin: top; opacity:1; }
+    100% { transform: scaleY(1) translateY(20px); transform-origin: top; opacity:0; }
+  }
+
+  .reveal {
+    opacity: 0; transform: translateY(28px);
+    transition: opacity 0.75s ease, transform 0.75s ease;
+  }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  /* ===== MOBILE ===== */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links {
+      display: none; position: absolute; top: 100%; left: 0; right: 0;
+      background: rgba(253,240,243,0.98); flex-direction: column;
+      padding: 2rem 2rem; gap: 1.5rem; border-bottom: 1px solid rgba(232,160,180,0.2);
+    }
+    .nav-links.open { display: flex; }
+    .burger { display: flex; }
+    .about-wrap { grid-template-columns: 1fr; gap: 3rem; }
+    .about-visual { order: -1; }
+    .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="mainNav">
+  <a class="logo" href="#">
+    <span class="logo-name">Dorota Joanna Mejna</span>
+    <span class="logo-sub">Medium & Doradca Duchowy</span>
+  </a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#o-mnie">O mnie</a></li>
+    <li><a href="#sesje">Sesje</a></li>
+    <li><a href="#szkolenia">Szkolenia</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#kontakt" class="nav-cta">Zarezerwuj sesję</a></li>
+  </ul>
+  <div class="burger" id="burger">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg-circle hbc1"></div>
+  <div class="hero-bg-circle hbc2"></div>
+  <div class="hero-bg-circle hbc3"></div>
+  <div class="hero-stars" id="heroStars"></div>
+
+  <div class="hero-inner">
+    <p class="hero-eyebrow">✦ Przestrzeń pełna miłości i akceptacji ✦</p>
+    <h1 class="hero-title">Dorota Joanna<br>Mejna</h1>
+    <p class="hero-title-sub">Medium · Odczyt Energetyczny · Mentoring Duchowy</p>
+    <div class="hero-divider"><span>✦</span></div>
+    <blockquote class="hero-quote">
+      „Kiedy otwierasz się na siebie,<br>Wszechświat otwiera się na Ciebie"
+    </blockquote>
+    <div class="hero-btns">
+      <a href="#sesje" class="btn btn-solid">Dostępne sesje</a>
+      <a href="#kontakt" class="btn btn-ghost">Napisz do mnie</a>
+    </div>
+  </div>
+  <a href="#o-mnie" class="scroll-down"><span>Odkryj</span><div class="scroll-arrow"></div></a>
+</section>
+
+<!-- O MNIE -->
+<section id="o-mnie">
+  <div class="container">
+    <div class="about-wrap">
+      <div class="about-visual reveal">
+        <div class="aura-wrap">
+          <div class="aura-ring"></div>
+          <div class="aura-ring"></div>
+          <div class="aura-ring"></div>
+          <div class="aura-card">
+            <span class="aura-symbol">🌙</span>
+            <p class="aura-text">Łączę dwa światy, by nieść spokój i zrozumienie</p>
+          </div>
+        </div>
+      </div>
+      <div class="about-content reveal">
+        <span class="section-eyebrow">Moja historia</span>
+        <h2 class="section-title">Moja droga do <em>duchowego świata</em></h2>
+        <div class="line-deco"></div>
+        <p>Zawsze czułam, że istnieje coś „większego". Świat, który widzimy na co dzień, to tylko część większej całości.</p>
+        <p>Moja ścieżka do tego miejsca przepełniona była licznymi „życiowymi" niespodziankami. Była to podróż przez własne lęki, wątpliwości, poszukiwanie i zrozumienie własnego „JA".</p>
+        <p>Uczyłam się słuchać siebie, interpretować znaki i ufać mojej wewnętrznej mądrości. Każdy krok był zaproszeniem do odkrywania czegoś większego — do odkrycia świata, w którym śmierć nie jest końcem, a jedynie przejściem do innego wymiaru.</p>
+        <p class="about-highlight">Bycie MEDIUM to wyjątkowa, ale i wymagająca droga — pełna światła i miłości.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NOTICE -->
+<div class="notice">
+  <p>Najbliższe wolne terminy zostaną udostępnione<br>
+  w kalendarzu rezerwacji z dniem<br>
+  <strong>1 lipca o godz. 8:00</strong><br>
+  Do zobaczenia na sesji! ✨</p>
+</div>
+
+<!-- SESJE -->
+<section id="sesje">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-eyebrow">Oferta</span>
+      <h2 class="section-title">Dostępne <em>sesje</em></h2>
+      <div class="line-deco"></div>
+    </div>
+    <div class="sessions-grid">
+      <div class="session-card reveal">
+        <span class="s-icon">⚛️</span>
+        <h3 class="s-name">Osobisty Odczyt Energetyczny</h3>
+        <p class="s-desc">Konsultacja w zakresie doradztwa duchowego. Głęboki wgląd w Twoją energię i aktualną ścieżkę życiową — co Cię blokuje, co Cię wspiera.</p>
+        <div class="s-footer">
+          <span class="s-price">490 zł</span>
+          <span class="s-dur">45 min</span>
+        </div>
+        <a href="mailto:dorotajoannamejna@gmail.com?subject=Rezerwacja%20-%20Osobisty%20Odczyt%20Energetyczny&body=Dzień%20dobry%2C%0A%0AChciałabym%2FChciałbym%20zarezerwować%20sesję%3A%20Osobisty%20Odczyt%20Energetyczny%20(490%20zł%20%2F%2045%20min).%0A%0AMoje%20imię%20i%20nazwisko%3A%20%0AProponowany%20termin%3A%20%0ATelefon%20kontaktowy%3A%20%0A%0ADziękuję!" class="session-book-btn">Zarezerwuj sesję →</a>
+      </div>
+      <div class="session-card reveal">
+        <span class="s-icon">🤍</span>
+        <h3 class="s-name">Sesja „Rozmowy z Zaświatów"</h3>
+        <p class="s-desc">Kontakt z bliskim — konsultacja duchowa. Połączenie i przesłanie od tych, którzy odeszli. Spokój i ukojenie dla serca.</p>
+        <div class="s-footer">
+          <span class="s-price">460 zł</span>
+          <span class="s-dur">30 min</span>
+        </div>
+        <a href="mailto:dorotajoannamejna@gmail.com?subject=Rezerwacja%20-%20Sesja%20Rozmowy%20z%20Zaswiatow&body=Dzień%20dobry%2C%0A%0AChciałabym%2FChciałbym%20zarezerwować%20sesję%3A%20Rozmowy%20z%20Zaświatów%20(460%20zł%20%2F%2030%20min).%0A%0AMoje%20imię%20i%20nazwisko%3A%20%0AProponowany%20termin%3A%20%0ATelefon%20kontaktowy%3A%20%0A%0ADziękuję!" class="session-book-btn">Zarezerwuj sesję →</a>
+      </div>
+      <div class="session-card reveal">
+        <span class="s-icon">🪬</span>
+        <h3 class="s-name">Duchowy Mentoring</h3>
+        <p class="s-desc">Dla osób pracujących z energią — mentoring w zakresie rozwijania własnych zdolności duchowych i pracy z energią.</p>
+        <div class="s-footer">
+          <span class="s-price">600 zł</span>
+          <span class="s-dur">1 h 10 min</span>
+        </div>
+        <a href="mailto:dorotajoannamejna@gmail.com?subject=Rezerwacja%20-%20Duchowy%20Mentoring&body=Dzień%20dobry%2C%0A%0AChciałabym%2FChciałbym%20zarezerwować%20sesję%3A%20Duchowy%20Mentoring%20(600%20zł%20%2F%201h10min).%0A%0AMoje%20imię%20i%20nazwisko%3A%20%0AProponowany%20termin%3A%20%0ATelefon%20kontaktowy%3A%20%0A%0ADziękuję!" class="session-book-btn">Zarezerwuj sesję →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SZKOLENIA -->
+<section id="szkolenia">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-eyebrow">Rozwój duchowy</span>
+      <h2 class="section-title">Szkolenia <em>&amp; Warsztaty</em></h2>
+      <div class="line-deco"></div>
+    </div>
+    <div class="training-grid">
+      <div class="training-card reveal">
+        <span class="t-icon">🌸</span>
+        <span class="t-tag">Warsztat Online</span>
+        <h3 class="t-name">Przebudzenie Intuicji</h3>
+        <p class="t-desc">Odkryj i rozwiń swoją wewnętrzną mądrość. Nauka słuchania znaków i interpretowania energii wokół Ciebie.</p>
+      </div>
+      <div class="training-card reveal">
+        <span class="t-icon">✨</span>
+        <span class="t-tag">Program 4 tygodnie</span>
+        <h3 class="t-name">Praca z Energią</h3>
+        <p class="t-desc">Fundamenty pracy energetycznej — ochrona, oczyszczanie i harmonizacja pola energetycznego.</p>
+      </div>
+      <div class="training-card reveal">
+        <span class="t-icon">🌙</span>
+        <span class="t-tag">Szkolenie Indywidualne</span>
+        <h3 class="t-name">Mediumizm — Pierwsze Kroki</h3>
+        <p class="t-desc">Dla osób czujących powołanie do pracy z duchowym wymiarem rzeczywistości. Bezpieczna i świadoma droga.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-eyebrow">Często zadawane pytania</span>
+      <h2 class="section-title">Masz <em>pytania?</em></h2>
+      <div class="line-deco"></div>
+    </div>
+    <div class="faq-wrap">
+      <div class="faq-item reveal">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          Jak wygląda sesja z Medium?
+          <span class="faq-icon">+</span>
+        </div>
+        <p class="faq-a">Sesja odbywa się online — przez wideo lub telefon. Nie musisz przygotowywać pytań, energie same prowadzą rozmowę. Najważniejsze to otwartość i gotowość na przyjęcie przesłania.</p>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          Jak zarezerwować termin?
+          <span class="faq-icon">+</span>
+        </div>
+        <p class="faq-a">Terminy otwierają się w kalendarzu rezerwacji w wyznaczonym dniu o godz. 8:00. Możesz też napisać bezpośrednio na adres dorotajoannamejna@gmail.com lub skorzystać z formularza kontaktowego na stronie.</p>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          Czy sesja jest dostępna dla każdego?
+          <span class="faq-icon">+</span>
+        </div>
+        <p class="faq-a">Tak, sesje są otwarte dla wszystkich, niezależnie od przekonań czy doświadczeń duchowych. Jedynym warunkiem jest otwartość i gotowość na przyjęcie tego, co przynosi sesja.</p>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          Jaka jest polityka anulowania?
+          <span class="faq-icon">+</span>
+        </div>
+        <p class="faq-a">Płatność jest wymagana przed sesją. Odwołanie jest możliwe do 24 godzin przed sesją — prosimy o kontakt mailowy. W przypadku nieobecności bez wcześniejszego odwołania opłata nie jest zwracana.</p>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          Czy sesję można przeprowadzić w języku obcym?
+          <span class="faq-icon">+</span>
+        </div>
+        <p class="faq-a">Sesje odbywają się głównie w języku polskim. W razie pytań dotyczących innych możliwości, prosimy o kontakt mailowy.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- KONTAKT -->
+<section id="kontakt">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-eyebrow">Kontakt & Rezerwacja</span>
+      <h2 class="section-title">Napisz <em>do mnie</em> 🌸</h2>
+      <div class="line-deco"></div>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-info reveal">
+        <p>Masz pytania dotyczące sesji lub chcesz się po prostu przywitać? Napisz do mnie — chętnie odpiszę na każdą wiadomość i pomogę znaleźć odpowiedni termin.</p>
+        <div class="contact-item">
+          <div class="contact-item-icon">📧</div>
+          <div class="contact-item-text">
+            <span class="contact-item-label">Gmail</span>
+            <a href="mailto:dorotajoannamejna@gmail.com" class="contact-item-value">dorotajoannamejna@gmail.com</a>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-item-icon">🌍</div>
+          <div class="contact-item-text">
+            <span class="contact-item-label">Sesje</span>
+            <span class="contact-item-value">Online — cała Polska i świat</span>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-item-icon">⏰</div>
+          <div class="contact-item-text">
+            <span class="contact-item-label">Odpowiedź</span>
+            <span class="contact-item-value">Do 24 godzin roboczych</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal">
+        <div class="contact-form" id="contactForm">
+          <div class="form-group">
+            <label>Imię i nazwisko</label>
+            <input type="text" id="f-name" placeholder="Twoje imię i nazwisko" />
+          </div>
+          <div class="form-group">
+            <label>Adres e-mail</label>
+            <input type="email" id="f-email" placeholder="twoj@email.com" />
+          </div>
+          <div class="form-group">
+            <label>Rodzaj sesji</label>
+            <select id="f-session">
+              <option value="">Wybierz sesję...</option>
+              <option value="Osobisty Odczyt Energetyczny (490 zł / 45 min)">Osobisty Odczyt Energetyczny — 490 zł / 45 min</option>
+              <option value="Sesja Rozmowy z Zaświatów (460 zł / 30 min)">Sesja „Rozmowy z Zaświatów" — 460 zł / 30 min</option>
+              <option value="Duchowy Mentoring (600 zł / 1h10min)">Duchowy Mentoring — 600 zł / 1h10min</option>
+              <option value="Szkolenie / Warsztat">Szkolenie / Warsztat</option>
+              <option value="Inne pytanie">Inne pytanie</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Wiadomość</label>
+            <textarea id="f-msg" placeholder="Napisz kilka słów o sobie lub zadaj pytanie..."></textarea>
+          </div>
+          <p class="form-note">Po wysłaniu formularza otworzy się Twój klient pocztowy z wypełnioną wiadomością.</p>
+          <button class="form-submit" onclick="sendEmail()">Wyślij wiadomość ✦</button>
+          <div class="success-msg" id="successMsg">✨ Dziękuję! Twoja wiadomość zostaje otwarta w aplikacji pocztowej. Do zobaczenia!</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p class="footer-logo">Dorota Joanna Mejna</p>
+  <p class="footer-sub">Medium & Doradca Duchowy</p>
+  <div class="footer-line"></div>
+  <p>© 2025 Dorota Joanna Mejna — Przestrzeń pełna miłości i akceptacji ✦</p>
+  <p style="margin-top:0.5rem;">dorotajoannamejna@gmail.com</p>
+</footer>
+
+<script>
+  // Nav scroll effect
+  window.addEventListener('scroll', () => {
+    document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // Burger menu
+  document.getElementById('burger').addEventListener('click', () => {
+    document.getElementById('navLinks').classList.toggle('open');
+  });
+  document.querySelectorAll('.nav-links a').forEach(a => {
+    a.addEventListener('click', () => document.getElementById('navLinks').classList.remove('open'));
+  });
+
+  // FAQ
+  function toggleFaq(el) {
+    const item = el.closest('.faq-item');
+    document.querySelectorAll('.faq-item').forEach(i => { if (i !== item) i.classList.remove('open'); });
+    item.classList.toggle('open');
+  }
+
+  // Reveal on scroll
+  const io = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 90);
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // Stars
+  const starsContainer = document.getElementById('heroStars');
+  for (let i = 0; i < 22; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    s.style.cssText = `left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${2+Math.random()*4}s;--delay:${Math.random()*4}s;opacity:0;`;
+    starsContainer.appendChild(s);
+  }
+
+  // Email form
+  function sendEmail() {
+    const name    = document.getElementById('f-name').value.trim();
+    const email   = document.getElementById('f-email').value.trim();
+    const session = document.getElementById('f-session').value;
+    const msg     = document.getElementById('f-msg').value.trim();
+
+    if (!name || !email) {
+      alert('Proszę wypełnić imię i adres e-mail.');
+      return;
+    }
+
+    const subject = session
+      ? `Rezerwacja - ${session}`
+      : 'Wiadomość ze strony';
+
+    const body = `Dzień dobry,\n\nImię i nazwisko: ${name}\nE-mail: ${email}\nRodzaj sesji: ${session || 'Nie wybrano'}\n\nWiadomość:\n${msg || '(brak wiadomości)'}\n\nDziękuję!`;
+
+    const mailto = `mailto:dorotajoannamejna@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    window.location.href = mailto;
+
+    document.getElementById('successMsg').style.display = 'block';
+  }
+</script>
+</body>
+</html>
